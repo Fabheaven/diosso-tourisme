@@ -189,7 +189,7 @@ button:hover {
 }
 
 .header-responsive a{
-    color: var(--color-white-1);
+    color: var(--color-primary-1-hover);
 }
 
 .logo img {
@@ -268,121 +268,138 @@ header.sticky{
 }
 
 
-@media (max-width:768px) {
-    .container{
-    width: 100%;
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
     }
-    
+
     .btn,
     .flags li {
-    display: none;
+        display: none;
     }
-    
-    nav ul{
-    position: fixed;
-    top: 62px;
-    right: 0;
-    padding: 0 15px;
-    overflow: hidden;
-    width: 202px;
-    background-color: var(--color-white-1);
-    flex-direction: column;
-    text-align: left;
-    transition: all 0.4s ease;
-    height: 0;
-    
+
+    nav ul {
+        position: fixed;
+        top: 66px;
+        right: 0;
+        padding: 0 10px;
+        overflow: hidden;
+        width: 110px;
+        background-color: var(--color-white-1);
+        flex-direction: column;
+        text-align: left;
+        height: 0;
+        transition: height 0.4s ease, padding 0.4s ease; /* Transition pour height et padding */
     }
-    
-    nav ul li{
-    margin: 5px 0;
+
+    nav ul li {
+        margin: 1px 0;
     }
-    
-    nav ul.open{
-    height: auto;
-    padding: 20px;
+
+    nav ul.open {
+        height: auto;
+        padding: 20px;
     }
-    
-.header-responsive{
-    display: flex;   
+
+    nav ul li a {
+        color: var(--text-color);
+        font-size: 7px; 
+    }
+
+    /* Le divider est initialement masqué */
+    .divider {
+        height: 1px;
+        background-color: var(--text-color);
+        width: 95%;
+        margin-left: 0px;
+        margin-right: auto;
+        margin-bottom: 1px;
+        opacity: 0; /* Masqué au départ */
+        transition: opacity 0.4s ease; /* Ajout d'une transition pour l'apparition */
+    }
+
+    /* Lorsque nav ul est ouvert, le divider devient visible */
+    nav ul.open .divider {
+        opacity: 1;
+    }
+
+    .header-responsive {
+        display: flex;
+    }
+
+    .header-responsive a {
+        margin: 20px;
+    }
+
+    header.sticky-header {
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .logo {
+        margin: 10px;
+    }
+
+    .flag {
+        display: flex;
+    }
+
+    .flag.fr img {
+        width: 12px;
+        margin-left: 5px;
+    }
+
+    .flag.us img {
+        width: 10px;
+        margin-left: 5px;
+    }
+
+    .flag a {
+        color: var(--text-color);
+    }
+
+    .connect-buttons {
+        display: none;
+        right: -170px;
+        top: 65px;
+        width: 100%;
+        max-width: 300px;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1px 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .connect-buttons.show {
+        display: flex;
+    }
+
+    .connect-buttons ul li {
+        margin-bottom: 5px;
+    }
+
+    .connect-buttons ul li a {
+        font-size: 10px;
+    }
+
+    .connect-buttons ul li a:hover {
+        border-bottom: none;
+        color: var(--color-primary-1);
+    }
+
+    /* Pour le responsive, on masque la div header-content */
+    .header-content {
+        display: none;
+    }
 }
 
-.header-responsive a{
-    margin: 20px;
-}
-
-header.sticky-header{
-    padding: 0;
-}
-
-.logo{
-    margin: 10px;
-}
-
-nav ul li a{
-    font-size: 0.8rem;
-
-}
-
-.flag{
-    display: flex;
-}
-.flag.fr img{
-    width: 27px;
-    margin-left: 10px; /* Ajouter de l'espace entre les icônes */
-}
-.flag.us img{
-    width: 20px; /* Largeur spécifique au drapeau américain */
-    margin-left: 10px; /* Ajouter de l'espace entre les icônes */
-    
-}
-.flag a{
-    color: #D84315;
-}
-
-.divider{
-    height: 1px;
-    background-color: var(--text-color);
-    width: 95%;
-    margin-left: 0px;
-    margin-right: auto;
-    margin-bottom: 5px;
-}
-
-.connect-buttons {
-    display: none; /* Masquer par défaut */
-    right: -170px; /* Réduit la distance avec le bord droit */
-    top: 65px; /* Position sous la barre de navigation */
-    width: 100%; /* Prend toute la largeur de l'écran */
-    max-width: 300px; /* Limite la largeur maximale */
-    flex-direction: row; /* Disposer les boutons horizontalement */
-    justify-content: space-between; /* Espacement entre les boutons */
-    padding: 1px 5px; /* Ajustement des espacements */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Légère ombre plus marquée */
-}
-
-.connect-buttons.show {
-    display: flex; /* Affiche la div lorsque la classe 'show' est ajoutée */
-}
-
-.connect-buttons ul li {
-    margin-bottom: 5px; /* Réduit l'espacement entre les éléments (li) */
-}
-
-.connect-buttons ul li a {
-    font-size: 10px; /* Réduit la taille de la police pour mobile */
-}
-
-.connect-buttons ul li a:hover {
-    border-bottom: none;
-    color: var(--color-primary-1);
-}
-
-/* Pour le responsive, on masque la div header-content */
-.header-content {
-    display: none;
-}
-
-}
 
 /* ==================== Début du hero ===================== */
 
