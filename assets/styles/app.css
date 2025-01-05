@@ -1,3 +1,547 @@
-body {
-    background-color: rgb(213, 12, 12);
+/* Réinitialisation de base */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
 }
+
+/* Couleurs globales */
+:root {
+    --primary-color: #2E7D32; /* Vert forêt */
+    --secondary-color: #D84315; /* Rouge terre cuite */
+    --accent-color: #F9A825; /* Jaune ocre */
+    --neutral-color: #F5F5DC; /* Beige sable */
+    --text-color: #01579B; /* Bleu profond */
+    --color-white-1: #fff;
+    --color-white-2: #e9e9e9;
+    --color-black: #000000;
+    --color-black-1: #292a2c;
+    --color-gray-1: #333;;
+    --color-gray-2: #6c757d;
+    --secondary-1: #3F814E;
+    --secondary-2: rgb(2, 39, 65);
+    --color-primary-1: #00B7F1;
+    --color-primary-1-hover: #03799d;
+}
+
+/* Fond de page */
+body {
+    background-color: var(--color-white-2);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;   
+}
+
+header.sticky-header{
+    position: absolute;
+    width: 100%;
+    color: var(--color-white-1);
+    padding: 5px;
+    top: 0;
+    backdrop-filter: blur(50px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    z-index: 1000; /* S'assurer que le header est au-dessus */
+}
+
+.sticky-header .container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center ;
+}
+
+nav ul li a.active {
+    color: var(--color-primary-1);
+    border-bottom: 2px solid var(--color-primary-1);
+    transition: 0.3s ease;
+}
+
+nav ul li a.active:hover {
+    color: var(--text-color);
+    border-bottom: 2px solid var(--text-color);
+}
+
+
+nav ul{
+    display: flex;
+}
+
+nav ul li{
+    margin: 15px;
+}
+
+nav ul li a{
+    color: var(--color-white-1);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+
+}
+
+nav ul li a:hover{
+    color: var(--color-primary-1);
+    border-bottom: 1px solid var(--color-primary-1);
+}
+
+.language-switcher {
+    position: relative;
+    display: inline-block;
+}
+
+.language-switcher a#active-language {
+    color: var(--color-white-1);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.language-switcher a#active-language:hover {
+    color: var(--color-primary-1-hover);
+    border-bottom: 2px solid var(--color-primary-1);
+}
+
+.language-switcher a#active-language i img {
+    margin-left: 8px;
+    width: 16px;
+    height: auto;
+}
+
+.language-switcher ul.flags {
+    display: none; /* Masqué par défaut */
+    position: absolute;
+    top: 46px;
+    left: 0;
+    background: var(--color-white-1);
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px auto; /* Ajuste les padding pour un alignement plus compact */
+    margin: 0; /* Évite l'espace supplémentaire */
+}
+
+.language-switcher ul.flags li {
+    display: flex; /* Met les éléments sur une seule ligne */
+    margin: 10px 10px; /* Ajoute de l'espace entre les éléments */
+    padding: 0; /* Supprime l'espacement interne */
+}
+
+.language-switcher ul.flags li a {
+    color: var(--color-black);
+    display: flex;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.language-switcher ul.flags li a:hover {
+    color: var(--color-primary-1-hover);
+    background-color: var(--color-gray-light);
+}
+
+.language-switcher ul.flags li a i img {
+    margin-left: 8px;
+    width: 16px;
+    height: auto;
+}
+
+.language-switcher ul.flags.show {
+    display: flex;
+    flex-direction: column; /* Visible quand la classe "show" est ajoutée */
+    align-items: flex-end;
+}
+
+
+
+button {
+    background: var(--color-primary-1-hover);
+    padding: 5px 10px;
+    height: 50px; /* Hauteur du bouton */
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-white-1);
+    border: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-left: 20px; /* Espace entre le bouton et les éléments précédents */
+}
+
+button:hover {
+    background-color: var(--text-color);
+}
+
+
+
+.header-responsive{
+    display: none;
+}
+
+.header-responsive a{
+    color: var(--color-white-1);
+}
+
+.logo img {
+    max-width: 120px;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+}
+
+.flags img {
+    width: 27px;
+    margin-right: 5px; /* Ajouter de l'espace entre les icônes */
+}
+
+.flag {
+    display: none;
+}
+
+
+/* Connect-buttons*/
+.connect-buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Positionner à droite */
+    padding: 15px;
+    position: absolute;
+    width: auto; /* Ajustement automatique de la largeur */
+    right: 110px;
+    top: 100%; /* Juste sous la barre de navigation */
+    background-color: var(--color-white-1);
+    border-radius: 6px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.connect-buttons ul li {
+    margin-bottom: 20px; /* Espacement entre les boutons */
+   
+}
+
+.connect-buttons ul li:last-child {
+    margin-bottom: 0; /* Pas d'espacement pour le dernier élément */
+}
+  
+.connect-buttons ul li a {
+    display: flex;
+    align-items: center; /* Alignement des images et textes */
+    gap: 10px; /* Espace entre l'image et le texte */
+    padding: 5px;
+    color: var(--color-primary-1-hover);
+    }
+
+.connect-buttons ul li a:hover{
+    color: var(--text-color);
+    border-bottom: 1px solid var(--text-color);
+}
+
+.connect-buttons{
+    display: none; /* Masque la div par défaut */
+}
+
+/* le second header après scroll*/
+header.sticky{
+    position: fixed;
+    top: 0;
+    padding: 20px;
+    z-index: 1000;
+    background-color: var(--color-primary-1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    transition: all 0.5s linear;
+
+}
+
+.connect-buttons.show {
+    display: flex !important; /* Affiche la div lorsque la classe 'show' est ajoutée */
+}
+
+
+@media (max-width:768px) {
+    .container{
+    width: 100%;
+    }
+    
+    .btn,
+    .flags li {
+    display: none;
+    }
+    
+    nav ul{
+    position: fixed;
+    top: 62px;
+    right: 0;
+    padding: 0 15px;
+    overflow: hidden;
+    width: 202px;
+    background-color: var(--color-white-1);
+    flex-direction: column;
+    text-align: left;
+    transition: all 0.4s ease;
+    height: 0;
+    
+    }
+    
+    nav ul li{
+    margin: 5px 0;
+    }
+    
+    nav ul.open{
+    height: auto;
+    padding: 20px;
+    }
+    
+.header-responsive{
+    display: flex;   
+}
+
+.header-responsive a{
+    margin: 20px;
+}
+
+header.sticky-header{
+    padding: 0;
+}
+
+.logo{
+    margin: 10px;
+}
+
+nav ul li a{
+    font-size: 0.8rem;
+
+}
+
+.flag{
+    display: flex;
+}
+.flag.fr img{
+    width: 27px;
+    margin-left: 10px; /* Ajouter de l'espace entre les icônes */
+}
+.flag.us img{
+    width: 20px; /* Largeur spécifique au drapeau américain */
+    margin-left: 10px; /* Ajouter de l'espace entre les icônes */
+    
+}
+.flag a{
+    color: #D84315;
+}
+
+.divider{
+    height: 1px;
+    background-color: var(--text-color);
+    width: 95%;
+    margin-left: 0px;
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+
+.connect-buttons {
+    display: none; /* Masquer par défaut */
+    right: -170px; /* Réduit la distance avec le bord droit */
+    top: 65px; /* Position sous la barre de navigation */
+    width: 100%; /* Prend toute la largeur de l'écran */
+    max-width: 300px; /* Limite la largeur maximale */
+    flex-direction: row; /* Disposer les boutons horizontalement */
+    justify-content: space-between; /* Espacement entre les boutons */
+    padding: 1px 5px; /* Ajustement des espacements */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Légère ombre plus marquée */
+}
+
+.connect-buttons.show {
+    display: flex; /* Affiche la div lorsque la classe 'show' est ajoutée */
+}
+
+.connect-buttons ul li {
+    margin-bottom: 5px; /* Réduit l'espacement entre les éléments (li) */
+}
+
+.connect-buttons ul li a {
+    font-size: 10px; /* Réduit la taille de la police pour mobile */
+}
+
+.connect-buttons ul li a:hover {
+    border-bottom: none;
+    color: var(--color-primary-1);
+}
+
+/* Pour le responsive, on masque la div header-content */
+.header-content {
+    display: none;
+}
+
+}
+
+/* ==================== Début du hero ===================== */
+
+/* Hero msg */
+
+.hero{
+    display: flex;
+    align-items: center; /* Aligne verticalement les éléments */
+    position: absolute;
+    left: 235px;
+    top: 180px;
+    z-index: 10;
+}
+
+.hero-msg ul li{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 140%;
+    text-transform: uppercase;
+    color: var(--color-white-1);
+}
+
+button.hero-btn {
+    border: 2px solid var(--color-white-1); /* Bordure blanche */
+    background: transparent; /* Fond transparent */
+    color: var(--color-white-1); /* Couleur du texte blanche */
+    padding: 10px 20px; /* Espacement interne */
+    font-size: 16px; /* Taille de la police */
+    cursor: pointer; /* Change le curseur au survol */
+    transition: background-color 0.3s, color 0.3s; /* Effet de transition */
+    margin-top: 20px; /* Espace supplémentaire pour descendre le bouton */
+}
+
+/* Effet au survol */
+button.hero-btn:hover {
+    background: var(--color-white-1); /* Fond blanc au survol */
+    color: var(--color-primary-1); /* Texte avec une couleur primaire au survol */
+}
+
+@media screen and (max-width: 768px) {
+    .hero{
+        display: flex;
+        align-items: center; /* Aligne verticalement les éléments */
+        position: absolute;
+        left: 55px;
+        top: 100px;
+        z-index: 10;
+    }
+
+    .hero-msg ul li {
+        font-size: 22px; /* Taille de police plus petite pour les petits écrans */
+        line-height: 130%;
+    }
+
+    button.hero-btn {
+        font-size: 7px; /* Taille de police réduite */
+        padding: 4px 8px; /* Réduire les espacements internes du bouton */
+        margin-top: 5px; /* Réduction de l'espace au-dessus du bouton */
+        border: 1px solid var(--color-white-1);
+        height: 25px; /* Hauteur du bouton */
+    }
+}
+
+
+
+
+
+
+
+
+.slider {
+    position: relative;
+    max-width: 100vw;
+    width: 100%;
+    height: 595px;
+    overflow: hidden;
+}
+
+.list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    transition: transform 1s ease-in-out; /* Smooth sliding effect */
+}
+
+.item {
+    width: 100vw; /* Each item takes the full viewport width */
+    flex-shrink: 0; /* Prevent shrinking */
+    height: 100%; 
+}
+
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.buttons {
+    position: absolute;
+    top: 45%;
+    left: 5%;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; 
+}
+
+.dots {
+    position: absolute;
+    bottom: 10px;
+    color: var(--color-white-1);
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.dots li {
+    width: 15px;
+    height: 15px;
+    background-color: var(--color-white-1);
+    margin: 20px;
+    border-radius: 20px;
+    transition: 1s;
+}
+
+.dots li.active {
+    width: 35px;
+    background-color: var(--color-primary-1-hover);
+}
+
+@media screen and (max-width: 768px) {
+    .slider {
+        height: 300px;
+    }
+
+    .buttons {
+        display: none;
+    }
+    .dots li {
+        width: 10px; /* Réduit la taille des points */
+        height: 10px;
+        margin: 10px;
+    }
+
+    .dots li.active {
+        width: 20px; /* Taille légèrement plus grande pour les points actifs */
+    }
+}
+
+
+/* ==================== Fin du hero ===================== */
