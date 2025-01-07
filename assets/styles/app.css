@@ -922,29 +922,173 @@ button.hero-btn:hover {
     }
 }
 
-
-
-
-
-
-/* ============ début section que-voir-que-faire ================ */
-
-.meilleurs-adresses-grid{
-    display: flex;
-    flex-wrap: wrap;
-    gap:20px
-}
-
-.address-card{
-    background-color: #e9e9e9;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    flex-basis: 270px;
-}
-
-.address-card img{
+/* ============ début section quand-partir ================ */
+.quand-partir {
+    position: relative;
     width: 100%;
-    object-fit: cover;
-    height: 152px;
+    color: var(--color-black);
+    padding: 5px;
+    bottom: -617px;
+}
+
+.quand-partir h2 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.8rem; /* Taille ajustée pour la lisibilité */
+}
+
+.quand-partir p {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 15px; /* Espace entre les paragraphes */
+    text-align: justify;
+    font-size: 1rem; /* Taille de texte lisible */
+}
+
+.quand-partir span {
+    display: block; /* Pour forcer un saut de ligne */
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: var(--color-primary-1); /* Même couleur que les ancres */
+    font-size: 1.1rem; /* Légèrement plus grand pour attirer l'attention */
+}
+
+.quand-partir button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--color-primary-1);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 1rem; /* Taille adaptée */
+}
+
+.quand-partir button:hover {
+    background-color: var(--text-color); /* Ajouter une teinte différente au survol */
+}
+
+/* Responsive pour tablettes */
+@media (max-width: 768px) {
+    .quand-partir { 
+        top: 25px;
+    }
+
+    .quand-partir h2 {
+        font-size: 1.6rem; /* Réduit la taille du titre pour s'adapter aux tablettes */
+    }
+
+    .quand-partir p {
+        font-size: 1rem; /* Réduit la taille du texte pour les écrans moyens */
+    }
+
+    .quand-partir span {
+        font-size: 1.1rem; /* Taille légèrement plus petite pour les spans */
+        margin-top: 15px;
+        margin-bottom: 8px;
+    }
+
+    .quand-partir button {
+        width: 100%; /* Le bouton prend toute la largeur sur tablette */
+        padding: 12px 20px;
+        font-size: 1rem; /* Ajuste la taille du texte du bouton */
+    }
+}
+
+/* ============ début section les-adresses ================ */
+.les-adresses {
+    position: relative;
+    width: 100%;
+    color: var(--color-black);
+    padding: 5px;
+    bottom: -617px;
+}
+
+.les-adresses h2 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.8rem; /* Taille ajustée pour la lisibilité */
+}
+
+.les-adresses .divider {
+    border: 1px solid var(--text-color);
+}
+
+.container-slider {
+    height: 10vh;
+    display: grid;
+    place-items: center;
+}
+
+.slider-container {
+    height: 300px;
+    width: 85vw;
+    max-width: 1400px;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.slider-container .slider-btn {
+    position: absolute;
+    top: calc(50% - 30px);
+    height: 15px;
+    width: 15px;
+    border-left: 8px solid #696969;
+    border-top: 8px solid #696969;
+    cursor: pointer;
+}
+
+.slider-container .slider-btn:hover {
+    transform: scale(1.2);
+}
+
+.slider-container .slider-btn.inactive {
+    border-color: #282828;
+}
+
+.slider-container .slider-btn:first-of-type {
+    transform: rotate(-45deg);
+    left: 10px;
+}
+
+.slider-container .slider-btn:last-of-type {
+    transform: rotate(135deg);
+    right: 10px; /* Utilisation de 'right' pour le bouton de droite */
+}
+
+#slider {
+    display: flex;
+    width: 1000%;
+    height: 100%;
+    transition: all 0.5s;
+}
+
+#slider .slide {
+    height: 90%;
+    margin: auto 10px;
+    background-color: #b5b5b5;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px 2px white, 
+                -2px -2px 4px 2px white;
+    display: grid;
+    place-items: center;
+}
+
+#slider .slide span {
+    color: white;
+    font-size: 60px;
+}
+@media screen {
+    
 }

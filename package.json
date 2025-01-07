@@ -15,11 +15,11 @@
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress",
         "dev": "rm -rf public/build && encore dev",
         "watch": "rm -rf public/build && encore dev --watch",
         "build": "rm -rf public/build && encore production"
+    },
+    "dependencies": {
+        "swiper": "^11.2.0"
     }
 }
