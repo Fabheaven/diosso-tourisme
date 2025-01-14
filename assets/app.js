@@ -185,7 +185,5 @@ list.addEventListener('mouseout', () => {
 });
 
 
-// installation des modules swiper
-import Swiper from 'swiper/bundle';      // Importer Swiper
-import 'swiper/swiper-bundle.css';       // Importer les styles de Swiper
+
 

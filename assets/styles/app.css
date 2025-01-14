@@ -30,7 +30,7 @@
 
 /* Fond de page */
 body {
-    background-color: var(--color-white-2);
+    background-color: #efefef;
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
 }
@@ -774,7 +774,7 @@ button.hero-btn:hover {
     align-items: center;
     justify-content: center;
     padding: 15px 20px; /* Espace interne pour un bouton plus grand */
-    background: linear-gradient(135deg, #FF7043, #BF360C); /* Dégradé de couleurs */
+    background: linear-gradient(135deg, #2C7A7B, #319795); /* Couleurs du thème Diosso */
     color: white; /* Texte en blanc */
     border: none; /* Supprime la bordure par défaut */
     border-radius: 10px; /* Coins arrondis */
@@ -787,7 +787,7 @@ button.hero-btn:hover {
 }
 
 .que-voir-button button:hover {
-    background: linear-gradient(135deg, #BF360C, #FF7043); /* Inverse le dégradé au survol */
+    background: linear-gradient(135deg, #319795, #2C7A7B); /* Inverse le dégradé */
     transform: translateY(-3px); /* Léger déplacement vers le haut */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Accentue l'ombre */
 }
@@ -882,7 +882,7 @@ button.hero-btn:hover {
         padding: 10px 15px; /* Réduction du padding */
         font-size: 0.9rem; /* Taille de texte réduite */
         border-radius: 10px; /* Coins arrondis */
-        background: linear-gradient(135deg, #FF7043, #BF360C); /* Dégradé de couleurs */
+        background: linear-gradient(135deg, #2C7A7B, #319795); /* Couleurs du thème Diosso */
         color: white; /* Texte blanc */
         border: none; /* Supprime la bordure */
         cursor: pointer; /* Pointeur au survol */
@@ -890,7 +890,7 @@ button.hero-btn:hover {
     }
     
     .que-voir-button button:hover {
-        background: linear-gradient(135deg, #BF360C, #FF7043); /* Inverse le dégradé au survol */
+        background: linear-gradient(135deg, #319795, #2C7A7B); /* Inverse le dégradé */
         transform: translateY(-3px); /* Léger déplacement vers le haut */
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Accentue l'ombre */
     }
@@ -1002,13 +1002,13 @@ button.hero-btn:hover {
     }
 }
 
-/* ============ début section les-adresses ================ */
+/* ============ Début section les-adresses ================ */
 .les-adresses {
     position: relative;
     width: 100%;
     color: var(--color-black);
     padding: 5px;
-    bottom: -617px;
+    top: 690px;
 }
 
 .les-adresses h2 {
@@ -1016,79 +1016,307 @@ button.hero-btn:hover {
     font-weight: 700;
     text-align: center;
     font-size: 1.8rem; /* Taille ajustée pour la lisibilité */
+    margin-bottom: 20px; /* Ajoute un espacement de 20px sous le titre */
 }
 
 .les-adresses .divider {
     border: 1px solid var(--text-color);
+    margin-top: 60px; /* Optionnel : ajuste l'espacement au-dessus du diviseur */
 }
-
 .container-slider {
-    height: 10vh;
-    display: grid;
-    place-items: center;
-}
-
-.slider-container {
-    height: 300px;
-    width: 85vw;
-    max-width: 1400px;
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    max-width: 1200px;
+    width: 95%;
+    overflow-x: hidden; /* Empêche l'affichage de la barre de défilement horizontale */
+    margin: 0 auto; /* Centre la div horizontalement */
+    position: relative; /* Nécessaire pour les éléments de navigation positionnés */
 }
 
-.slider-container .slider-btn {
-    position: absolute;
-    top: calc(50% - 30px);
-    height: 15px;
-    width: 15px;
-    border-left: 8px solid #696969;
-    border-top: 8px solid #696969;
-    cursor: pointer;
+.slider-wrapper {
+    display: flex; /* Utilise flexbox pour aligner les éléments horizontalement */
+    gap: 20px; /* Espacement entre les éléments */
+    padding: 20px;
+    flex-wrap: nowrap; /* Empêche les éléments de passer à la ligne suivante */
 }
 
-.slider-container .slider-btn:hover {
-    transform: scale(1.2);
-}
-
-.slider-container .slider-btn.inactive {
-    border-color: #282828;
-}
-
-.slider-container .slider-btn:first-of-type {
-    transform: rotate(-45deg);
-    left: 10px;
-}
-
-.slider-container .slider-btn:last-of-type {
-    transform: rotate(135deg);
-    right: 10px; /* Utilisation de 'right' pour le bouton de droite */
-}
-
-#slider {
+.card-list {
+    background-color: var(--text-color);
+    border-radius: 8px;
     display: flex;
-    width: 1000%;
-    height: 100%;
-    transition: all 0.5s;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* Empêche le débordement de l'image */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Ombre plus marquée */
+    width: 251px;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition fluide pour le zoom et l'ombre */
 }
 
-#slider .slide {
-    height: 90%;
-    margin: auto 10px;
-    background-color: #b5b5b5;
-    border-radius: 5px;
-    box-shadow: 2px 2px 4px 2px white, 
-                -2px -2px 4px 2px white;
+.card-list:hover {
+    transform: translateY(-10px); /* Décalage de la carte vers le haut */
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3); /* Ombre plus marquée lors du survol */
+}
+
+.card-list img {
+    width: 100%; /* L'image occupe toute la largeur */
+    height: 200px; /* Fixe une hauteur uniforme pour les images */
+    object-fit: cover; /* Adapte l'image pour remplir la zone sans déformation */
+    transition: transform 0.3s ease; /* Transition de zoom fluide pour l'image */
+}
+
+.card-list:hover img {
+    transform: scale(1.05); /* Zoom de l'image au survol */
+}
+
+.card-list span {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-white-1);
+    text-align: center;
+    padding: 15px; /* Ajoute de l'espace autour du texte */
+    Border-radius: 25px 25px 0 25px;
+}
+
+/* ============ Responsive ================ */
+
+@media (max-width: 1200px) {
+    .container-slider {
+        width: 90%;
+    }
+
+    .card-list {
+        width: 220px;
+    }
+}
+
+@media (max-width: 992px) {
+
+    .card-list {
+        width: 100%; /* Les cartes occupent toute la largeur */
+        height: auto;
+    }
+
+    .card-list img {
+        height: 150px; /* Réduit la hauteur des images */
+    }
+
+    .les-adresses h2 {
+        font-size: 1.6rem; /* Taille de police plus petite */
+    }
+}
+
+@media (max-width: 768px) {
+    .container-slider {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .card-list {
+        width: 100%;
+    }
+
+    .card-list img {
+        height: 130px; /* Ajuste la taille des images */
+    }
+
+    .les-adresses h2 {
+        font-size: 1.4rem; /* Ajuste la taille du titre pour mobile */
+        margin-bottom: 15px; /* Réduit l'espacement sous le titre */
+    }
+}
+
+@media (max-width: 480px) {
+    .les-adresses h2 {
+        font-size: 1.2rem; /* Taille du titre encore plus petite pour les très petits écrans */
+    }
+
+    .card-list {
+        width: 100%; /* Les cartes prennent toute la largeur */
+    }
+
+    .card-list img {
+        height: 120px; /* Réduit encore la taille des images */
+    }
+
+    .card-list span {
+        font-size: 0.9rem; /* Réduit la taille du texte */
+        padding: 12px; /* Réduit l'espace autour du texte */
+    }
+}
+
+/* ============ Début section voyager ================ */
+
+/* Section principale */
+.voyager {
+    position: relative;
+    width: 100%;
+    color: var(--color-black);
+    padding: 20px;
+    top: 690px;
+}
+
+.voyager h2 {
+    text-align: center; /* Centrer les titres */
+    margin-bottom: 20px;
+    font-size: 1.8rem; /* Taille du titre */
+    color: var(--color-primary-1);
+}
+
+.voyager-grid {
     display: grid;
-    place-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Grille responsive */
+    gap: 20px; /* Espacement entre les cartes */
+    margin: 0 auto; /* Centrer la grille */
+    max-width: 1200px; /* Largeur maximale de la grille */
+    padding: 0 10px;
 }
 
-#slider .slide span {
-    color: white;
-    font-size: 60px;
+/* Style des cartes */
+.voyager-car {
+    background-color: var(--color-white-1);
+    border-radius: 15px;
+    overflow: hidden; /* Assurez-vous que l'image reste dans la carte */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: transform 0.3s, box-shadow 0.3s; /* Effet au survol */
 }
-@media screen {
-    
+
+.voyager-car:hover {
+    transform: translateY(-5px); /* Légère élévation */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Image */
+.image-content img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Recadrage de l'image */
+    border-radius: 15px 15px 0 0; /* Arrondi du haut */
+}
+
+/* Contenu de la carte */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer le contenu horizontalement */
+    padding: 15px;
+    text-align: center;
+}
+
+/* Nom centré */
+.name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+/* Budget et autres infos */
+.card-content p {
+    font-size: 0.9rem;
+    margin: 8px 0;
+}
+
+.card-content span {
+    font-size: 0.8rem;
+    color: var(--color-primary-1);
+}
+
+/* Bouton */
+.btn-card {
+    background-color: var(--color-primary-1);
+    color: var(--color-white-1);
+    border: none;
+    font-size: 0.9rem;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-card:hover {
+    background-color: var(--color-primary-2); /* Couleur différente au survol */
+}
+
+/* Style des cartes */
+.voyager-car {
+    background-color: var(--color-white-1);
+    border-radius: 15px;
+    overflow: hidden; /* Assurez-vous que l'image reste dans la carte */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    transition: transform 0.3s, box-shadow 0.3s; /* Effet au survol */
+}
+
+.voyager-car:hover {
+    transform: translateY(-5px); /* Légère élévation */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Image */
+.image-content img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Recadrage de l'image */
+    border-radius: 15px 15px 0 35px; /* Arrondi du haut */
+    transition: filter 0.3s ease-in-out; /* Effet de transition fluide */
+}
+
+.voyager-car:hover .image-content img {
+    filter: blur(4px); /* Applique un flou à l'image */
+}
+
+/* Style pour le bouton sous la carte */
+.btn-card-down {
+    position: absolute;
+    display: block; /* Bouton comme élément de bloc */
+    margin: 20px; /* Marges pour le centrer et espacement supérieur */
+    background-color: var(--color-primary-1); /* Couleur principale */
+    color: var(--color-white-1); /* Texte blanc */
+    border: none; /* Supprime les bordures */
+    padding: 10px 20px; /* Ajoute du padding pour un bouton large */
+    border-radius: 5px; /* Coins arrondis */
+    font-size: 0.9rem; /* Taille du texte */
+    cursor: pointer; /* Curseur pointeur */
+    transition: background-color 0.3s, transform 0.3s; /* Transitions fluides */
+}
+
+.btn-card-down:hover {
+    background-color: var(--color-primary-2); /* Couleur alternative au survol */
+    transform: translateY(-3px); /* Légère élévation au survol */
+}
+
+
+.decouvrer-content {
+    position: relative;
+    width: 100%;
+    color: var(--color-black);
+    padding: 5px;
+    top: 905px;
+}
+
+.decouvrer-content h2 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+}
+
+.decouvrer-content p {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    gap: 10px;
+}
+
+.decouvrer-content h2, 
+.decouvrer-content h3 {
+    text-align: center;
+}
+
+.decouvrer-content h3 {
+    margin-bottom: 20px; /* Ajoute de l'espace après le h3 */
+}
+
+.decouvrer-content p {
+    margin-bottom: 15px; /* Ajoute de l'espace entre les paragraphes */
+    text-align: justify; /* Optionnel, justifie le texte */
 }
