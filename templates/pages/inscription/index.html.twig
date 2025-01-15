@@ -1,0 +1,84 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Inscription
+{% endblock %}
+
+{% block body %}
+<div class="ip-register">
+  <img src="img/slides/img-7.jpeg" alt="slides-picture">
+</div>
+
+<div class="ip-conteneur">
+    <span class="ip-elipse"></span>
+    
+    <div class="ip-content">
+        <h1 class="ip-titre">S’inscrire</h1>    
+
+        {# Affichage des messages flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form_start(inscriptionType, {'attr': {'class': 'ip-form'}}) }}
+    
+        <div class="ip-champ">
+            <label for="first_name">Veuillez saisir un prénom</label>
+            {{ form_widget(inscriptionType.first_name, {'attr': {'class': 'ip-input'}}) }}
+            {{ form_errors(inscriptionType.first_name, {'attr': {'class': 'ip-error'}}) }}
+        </div>
+
+        <div class="ip-champ">
+            <label for="last_name">Veuillez saisir un nom</label>
+            {{ form_widget(inscriptionType.last_name, {'attr': {'class': 'ip-input'}}) }}
+            {{ form_errors(inscriptionType.last_name, {'attr': {'class': 'ip-error'}}) }}
+        </div>
+
+        <div class="ip-champ">
+            <label for="email">Veuillez saisir votre e-mail</label>
+            {{ form_widget(inscriptionType.email, {'attr': {'class': 'ip-input'}}) }}
+            {{ form_errors(inscriptionType.email, {'attr': {'class': 'ip-error'}}) }}
+        </div>
+    
+        <div class="ip-champ-pwd">
+            <label for="password.first" class="form-label">Veuillez saisir un mot de passe</label>
+            {{ form_widget(inscriptionType.password.first, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(inscriptionType.password.first) }}
+        </div>
+
+        <div class="ip-champ-pwd">
+            <label for="password.second" class="form-label">Confirmer le mot de passe</label>
+            {{ form_widget(inscriptionType.password.second, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(inscriptionType.password.second) }}
+        </div>
+
+        <div class="ip-champ-checkbox">
+            {{ form_widget(inscriptionType.conditions, {'attr': {'class': 'ip-checkbox-input'}}) }}
+            {{ form_label(inscriptionType.conditions, null, {'label_attr': {'class': 'ip-checkbox-label'}}) }}
+            {{ form_errors(inscriptionType.conditions, {'attr': {'class': 'ip-error'}}) }}
+        </div>
+
+        <div class="ip-submit">
+            {{ form_widget(inscriptionType.submit, {'attr': {'class': 'ip-button'}}) }}
+        </div>
+
+        <div class="ip-button-conteneur">
+            <div class="ip-button-up">
+                <ul class="ip-list">
+                    <li>Vous avez déjà un compte ?</li>
+                    <li><a href="{{ path('app_connexion') }}">Connectez-vous</a></li>
+                </ul>
+            </div>
+
+            <a href="#" class="ip-button-down">BESOIN D’AIDE</a>
+        </div>
+    
+        {{ form_end(inscriptionType) }}
+    </div>
+</div>
+
+{% endblock %}
