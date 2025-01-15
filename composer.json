@@ -12,6 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "^3.3",
         "easycorp/easyadmin-bundle": "^4.20",
+        "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
         "knplabs/knp-menu-bundle": "^3.5",
         "liip/imagine-bundle": "^2.13",
@@ -83,6 +84,7 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.0",
         "symfony/maker-bundle": "^1.61"
     }
 }
