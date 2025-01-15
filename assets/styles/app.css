@@ -28,6 +28,7 @@
     --color-primary-1-hover: #03799d;
 }
 
+
 /* Fond de page */
 body {
     background-color: #efefef;
@@ -38,7 +39,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;   
+    padding: 0 20px;
 }
 
 header.sticky-header{
@@ -576,6 +577,11 @@ button.hero-btn:hover {
 
 .under-hero ul{
     display: flex;
+    gap: 20px;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
     
 }
 
@@ -601,8 +607,11 @@ button.hero-btn:hover {
     justify-content:space-between;
     color: var(--color-white-1);
     font-weight: 600;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
     font-size: 1.2rem;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
+    transition: color 0.3s ease, border-bottom 0.3s ease; 
 }
 
 /* Media Queries */
@@ -677,6 +686,12 @@ button.hero-btn:hover {
 .congo-brazzaville h2, 
 .congo-brazzaville h3 {
     text-align: center;
+}
+
+.congo-brazzaville h2,
+.congo-brazzaville h3 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .congo-brazzaville h3 {
@@ -870,6 +885,28 @@ button.hero-btn:hover {
         margin-bottom: 25px; /* Espace sous le titre */
     }
     
+     /* Grille */
+     .que-voir-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes ajustées */
+        gap: 20px; /* Réduction de l'espace entre les cartes */
+    }
+
+    /* Cartes */
+    .que-voir-card {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légèrement réduite */
+    }
+
+    .que-voir-card img {
+        height: 250px; /* Réduction de la hauteur des images */
+    }
+
+    .que-voir-card span {
+        font-size: 0.9rem; /* Taille de texte réduite */
+        padding: 8px 15px; /* Moins de padding */
+    }
+
+
+
     /* Boutons : deux par ligne */
     .que-voir-button {
         display: grid; /* Utilise la grille pour organiser les boutons */
@@ -901,25 +938,7 @@ button.hero-btn:hover {
     }
     
 
-    /* Grille */
-    .que-voir-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes ajustées */
-        gap: 20px; /* Réduction de l'espace entre les cartes */
-    }
-
-    /* Cartes */
-    .que-voir-card {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légèrement réduite */
-    }
-
-    .que-voir-card img {
-        height: 250px; /* Réduction de la hauteur des images */
-    }
-
-    .que-voir-card span {
-        font-size: 0.9rem; /* Taille de texte réduite */
-        padding: 8px 15px; /* Moins de padding */
-    }
+   
 }
 
 /* ============ début section quand-partir ================ */
@@ -1286,13 +1305,18 @@ button.hero-btn:hover {
     transform: translateY(-3px); /* Légère élévation au survol */
 }
 
+/*============ début section decouvrer    ======*/
+
+.decouvrir {
+    padding: 30px 20px;
+    background-color: #f9f9f9;}
+
 
 .decouvrer-content {
     position: relative;
     width: 100%;
     color: var(--color-black);
     padding: 5px;
-    top: 905px;
 }
 
 .decouvrer-content h2 {
@@ -1319,4 +1343,259 @@ button.hero-btn:hover {
 .decouvrer-content p {
     margin-bottom: 15px; /* Ajoute de l'espace entre les paragraphes */
     text-align: justify; /* Optionnel, justifie le texte */
+}
+
+.decouvrer-img{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* S'adapte à la taille de l'écran */
+    gap: 30px;
+    justify-items: center;
+}
+
+.decouvrer-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Légère ombre */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.decouvrer-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover; /* Recouvre toute la zone */
+    transition: transform 0.5s ease; /* Animation sur l'image */
+}
+
+.decouvrer-card span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    opacity: 0; /* Masqué par défaut */
+    transform: translateY(100%); /* Positionné en dehors de la vue */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Animation d'apparition */
+}
+
+.decouvrer-card:hover {
+    transform: scale(1.05); /* Agrandissement de la carte */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Ombre accentuée */
+}
+
+.decouvrer-card:hover img {
+    transform: scale(1.1); /* Zoom sur l'image */
+}
+
+.decouvrer-card:hover span {
+    opacity: 1; /* Rendre visible le texte */
+    transform: translateY(0); /* Faire remonter le texte */
+}
+
+@media (max-width: 768px) {
+    /* Section globale */
+    .decouvrer {
+        padding: 10px;
+        top: auto; /* Supprime le positionnement absolu ou fixe */
+        margin-top: 20px; /* Ajoute un espace après la section précédente */
+    }
+    
+    .decouvrer-content h2 {
+        font-size: 1.2rem; /* Réduit la taille de la police */
+        margin-bottom: 25px; /* Espace sous le titre */
+    }
+    
+     /* Grille */
+     .decouvrer-img {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes ajustées */
+        gap: 20px; /* Réduction de l'espace entre les cartes */
+    }
+
+    /* Cartes */
+    .decouvrer-card {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légèrement réduite */
+    }
+
+    .decouvrer-card img {
+        height: 250px; /* Réduction de la hauteur des images */
+    }
+
+    .decouvrer-card span {
+        font-size: 0.9rem; /* Taille de texte réduite */
+        padding: 8px 15px; /* Moins de padding */
+    }
+}
+
+/* ============ Début footer ================ */
+.footer {
+    position: relative; /* Change "absolute" pour éviter les problèmes de chevauchement */
+    width: 100%;
+    background: linear-gradient(93.73deg, #0C4E63 2.18%, #000000 99.18%);
+    color: var(--color-white-1);
+    padding: 40px 0;
+}
+
+.newsletter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.newsletter-container {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column; /* Aligne les éléments verticalement */
+    gap: 20px; /* Ajoute de l'espace entre les cartes */
+}
+
+.newsletter-container  ul li a{
+    color: var(--color-white-1);
+}
+
+
+.liens-populaires ul li a:hover,
+.social-media ul li a:hover,
+.email a:hover{
+    text-decoration: underline;
+    color: var(--color-primary-1);
+}
+
+.newsletter-content {
+    display: flex; /* Applique le flex aux enfants directs */
+    justify-content: space-between; /* Répartit les éléments avec de l'espace entre eux */
+    flex-wrap: wrap; /* Permet le passage à la ligne si nécessaire */
+    
+}
+
+.newsletter-responsive {
+    display: flex; /* Permet de placer les enfants en ligne */
+    justify-content: space-between; /* Ajoute de l'espace égal entre les éléments */
+    align-items: flex-start; /* Aligne les éléments au sommet */
+    gap: 70px; /* Espacement entre les colonnes */
+    padding: 20px; /* Ajoute de l'espace intérieur pour une meilleure apparence */
+    flex-wrap: wrap; /* Permet le passage à la ligne en cas de manque d'espace */
+}
+
+.newsletter-responsive > div {
+    flex: 1; /* Assure que les colonnes prennent une taille égale */
+    min-width: 200px; /* Largeur minimale pour éviter qu'elles deviennent trop petites */
+}
+
+
+
+div > .newsletter-card,
+div > .contact {
+    margin-bottom: 20px; /* Ajoute un espace de 20px entre les deux blocs */
+}
+
+
+.newsletter-card,
+.contact,
+.social-media,
+.liens-populaires {
+    flex: 1 1 calc(25% - 20px); /* Chaque bloc occupe 25% moins l'espacement */
+    display: flex;
+    flex-direction: column; /* Les contenus internes sont alignés verticalement */
+    gap: 10px; /* Ajoute de l'espacement entre les éléments */
+}
+
+.newsletter-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-white-1);
+}
+
+#newsletter-input {
+    width: 100%;
+    max-width: 302.94px;
+    height: 40px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 1px solid var(--color-gray-2);
+    border-radius: 5px;
+    
+}
+.contact ul,
+.social-media ul,
+.liens-populaires ul {
+    display: flex;
+    flex-direction: column; /* Positionne les listes en colonne */
+    gap: 10px; /* Ajoute de l'espace entre les éléments */
+}
+
+
+.social-media ul,
+.liens-populaires ul {
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.social-media ul li,
+.liens-populaires ul li {
+    font-size: 0.9rem;
+}
+
+.mentions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.mentions .divider {
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+    border-top: 1px solid var(--color-gray-2);
+}
+
+.mentions ul {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+/* Alignement horizontal et espacement */
+ul {
+    list-style: none;
+    padding: 0;
+    gap: 20px;
+}
+
+li {
+    display: inline-block;
+}
+
+/* Ajustements pour les petits écrans */
+@media (max-width: 768px) {
+    .newsletter {
+        flex-direction: column;
+    }
+
+    .social-media ul,
+    .liens-populaires ul {
+        justify-content: center;
+    }
+
+    .newsletter-content {
+        flex-direction: column; /* Les éléments s'empilent en colonne */
+        align-items: center; /* Centre les éléments */
+    }
+
+    
+    .newsletter-card,
+    .contact,
+    .social-media,
+    .liens-populaires {
+        flex: 1 1 100%; /* Chaque bloc prend 100% de la largeur */
+        max-width: 500px; /* Limite la largeur pour l'esthétique */
+    }
 }

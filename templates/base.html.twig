@@ -6,33 +6,32 @@
     <meta name="description" content="{% block meta_description %}Découvrez Diosso Tourisme, votre guide touristique pour explorer le Congo-Brazzaville avec des services sur mesure : réservation d'hébergements, transports, activités, et plus encore.{% endblock %}">
     <title>{% block title %}Diosso Tourisme - Explorez le Congo-Brazzaville avec Nos Services Sur Mesure{% endblock %}</title>
 
-     <!-- Importation des polices depuis Google Fonts -->
+    <!-- Importation des polices depuis Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@400;700&family=Roboto:wght@400;500&family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
 
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
 </head>
 
 <body>
-<head>
+    <header>
         {% include "/components/navbar.html.twig" %}
         {% include "/components/hero.html.twig" %}
-</head>
+    </header>
 
-<main>
-        <footer>
-            {% include "components/footer.html.twig" %}
-        </footer>
-</main>
+    <main>
         {% block body %}{% endblock %}
+    </main>
+
+    <footer>
+        {% include "components/footer.html.twig" %}
+    </footer>
 </body>
 </html>
