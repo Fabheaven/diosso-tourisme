@@ -14,6 +14,7 @@
         "easycorp/easyadmin-bundle": "^4.20",
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
+        "karser/karser-recaptcha3-bundle": "^0.1.28",
         "knplabs/knp-menu-bundle": "^3.5",
         "liip/imagine-bundle": "^2.13",
         "scheb/2fa-bundle": "^7.6",

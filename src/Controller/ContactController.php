@@ -54,8 +54,10 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('app_contact');
         }
 
-        return $this->render('pages/contact/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        // Passer la clé ReCAPTCHA à la vue
+    return $this->render('pages/contact/index.html.twig', [
+        'form' => $form->createView(),
+        
+    ]);
     }
 }
