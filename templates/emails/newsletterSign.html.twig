@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">  
+</head>
+
+<body>
+   <h1>Demande d'inscription à la newsletter</h1>
+
+   <p>Bonjour !</p>
+   
+   <p>Merci de vous être inscrit à notre newsletter !</p>
+
+   <p>Nous avons bien enregistré votre demande d'inscription avec l'email suivant : <strong>{{ user.email }}</strong></p>
+   
+   <p>Vous avez sélectionné les catégories suivantes :</p>
+   <ul>
+      {% for category in user.categories %}
+         <li>{{ category.name }}</li>
+      {% endfor %}
+   </ul>
+
+   <p>Pour finaliser votre inscription, veuillez cliquer sur le lien ci-dessous :</p>
+   <p><a href="{{ absolute_url(path('app_confirm', {id: user.id, token: token})) }}">Confirmer l'inscription</a></p>
+
+   <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.</p>
+
+   <p>Merci,</p>
+   <p>L'équipe de Diosso Tourisme</p>
+</body>
+</html>

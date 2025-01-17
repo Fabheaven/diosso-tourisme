@@ -27,7 +27,7 @@ class Contact
     #[Assert\Email(message: "L'adresse email n'est pas valide.")]
     #[Assert\Regex(
         pattern: "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(fr|com)$/",
-        message: "L'adresse email doit être de la forme nom@nom.fr ou nom@nom.com."
+        message: "L'adresse email doit être de la forme nom@nom.fr ou nom@nom.com"
     )]
     private ?string $email;
 

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation d'inscription{% endblock %}
+
+{% block body %}
+    <!-- Affichage des messages flash -->
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <h1>Félicitations !</h1>
+    <p>Votre inscription est en attente de validation. Un email de confirmation vous a été envoyé.</p>
+{% endblock %}
