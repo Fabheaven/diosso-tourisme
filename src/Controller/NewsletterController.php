@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Newsletters\Newsletters;
 use App\Entity\Newsletters\Users;
 use App\Form\NewslettersUsersType;
+use App\Form\NewsletterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,6 +90,22 @@ class NewsletterController extends AbstractController
     {
         return $this->render('pages/newsletter/confirm.html.twig');
     }
+    
+    #[Route('/newsletter/editNewsletter', name: 'app_newsletter_editNewsletter')]
+    public function editNewsletter(): Response
+    {
+        $newsletter = new Newsletters();
+        $form = $this->createForm(NewsletterType::class, $newsletter);
+
+        return $this->render('pages/newsletter/editNewsletter.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+  
+
 }
+
 
 
