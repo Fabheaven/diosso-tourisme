@@ -6,6 +6,7 @@ use App\Repository\Newsletters\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories
@@ -15,6 +16,11 @@ class Categories
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'The category name cannot be blank.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'The category name cannot exceed 255 characters.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -73,9 +79,9 @@ class Categories
 
     public function removeUser(Users $user): self
     {
-        if($this->users->removeElement($user)){
+        if ($this->users->removeElement($user)) {
             $user->removeCategory($this);
-        };
+        }
 
         return $this;
     }
@@ -101,7 +107,6 @@ class Categories
     public function removeNewsletter(Newsletters $newsletter): self
     {
         if ($this->newsletters->removeElement($newsletter)) {
-            // set the owning side to null (unless already changed)
             if ($newsletter->getCategories() === $this) {
                 $newsletter->setCategories(null);
             }

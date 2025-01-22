@@ -18,7 +18,11 @@ class NewsletterType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('content', HiddenType::class)
+            ->add('content', TextType::class, [
+                'attr' => ['style' => 'display:none;'],
+                'required' => false,
+            ])
+            
             ->add('categories', EntityType::class, [
                 'class' => Categories::class,
                 'choice_label' => 'name',

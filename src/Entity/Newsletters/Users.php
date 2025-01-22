@@ -6,6 +6,7 @@ use App\Repository\Newsletters\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 class Users
@@ -15,6 +16,8 @@ class Users
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Email(message: 'Please provide a valid email address.')]
+    #[Assert\NotBlank(message: 'Email is required.')]
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $email = null;
 
@@ -24,6 +27,10 @@ class Users
     #[ORM\Column]
     private ?bool $isRgpd = false;
 
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Validation token cannot exceed 255 characters.'
+    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $validationToken = null;
 
@@ -36,9 +43,9 @@ class Users
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'users')]
     private Collection $categories;
 
-    public function __construct()
+    public function __construct(?\DateTimeImmutable $createdAt = null)
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
         $this->categories = new ArrayCollection();
     }
 
@@ -119,7 +126,7 @@ class Users
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
-            $category->addUser($this); // Met à jour l'autre côté de la relation si défini
+            $category->addUser($this);
         }
 
         return $this;
@@ -128,7 +135,7 @@ class Users
     public function removeCategory(Categories $category): self
     {
         if ($this->categories->removeElement($category)) {
-            $category->removeUser($this); // Met à jour l'autre côté de la relation si défini
+            $category->removeUser($this);
         }
 
         return $this;

@@ -6,6 +6,7 @@ use App\Entity\Newsletters\Newsletters;
 use App\Entity\Newsletters\Users;
 use App\Form\NewslettersUsersType;
 use App\Form\NewsletterType;
+use App\Repository\Newsletters\NewslettersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,16 +26,12 @@ class NewsletterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Génération du token unique
             $token = hash('sha256', uniqid());
-
             $user->setValidationToken($token);
 
-            // Persistance et sauvegarde en base de données
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Envoi de l'email
             $email = (new TemplatedEmail())
                 ->from('newsletter@diossotourisme.fr')
                 ->to($user->getEmail())
@@ -48,11 +45,9 @@ class NewsletterController extends AbstractController
 
             $mailer->send($email);
 
-            // Ajout du message flash
             $this->addFlash('success', 'Votre inscription est en attente de validation. Un email de confirmation vous a été envoyé.');
 
-            // Redirection vers la page de confirmation
-            return $this->redirectToRoute("app_newsletter_confirm"); // La page de confirmation
+            return $this->redirectToRoute('app_newsletter_confirm');
         }
 
         return $this->render('pages/newsletter/index.html.twig', [
@@ -63,26 +58,19 @@ class NewsletterController extends AbstractController
     #[Route('/confirm/{id}/{token}', name: 'app_confirm')]
     public function confirm(Users $user, string $token, EntityManagerInterface $entityManager): Response
     {
-        // Vérification si le token correspond à celui de l'utilisateur
         if ($user->getValidationToken() !== $token) {
             throw $this->createNotFoundException('Le token est invalide');
         }
 
-        // Activation de l'utilisateur
         $user->setValid(true);
-
-        // Suppression du token après validation
         $user->setValidationToken(null);
 
-        // Persistance et sauvegarde en base de données
         $entityManager->persist($user);
         $entityManager->flush();
 
-        // Ajout du message flash
         $this->addFlash('success', 'Votre compte a été activé avec succès.');
 
-        // Redirection vers la page d'accueil ou une autre page appropriée
-        return $this->redirectToRoute('app_home'); // Redirection vers la page d'accueil
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/newsletter/confirmation', name: 'app_newsletter_confirm')]
@@ -90,22 +78,36 @@ class NewsletterController extends AbstractController
     {
         return $this->render('pages/newsletter/confirm.html.twig');
     }
-    
+
     #[Route('/newsletter/editNewsletter', name: 'app_newsletter_editNewsletter')]
-    public function editNewsletter(): Response
+    public function editNewsletter(Request $request, EntityManagerInterface $entityManager): Response
     {
         $newsletter = new Newsletters();
         $form = $this->createForm(NewsletterType::class, $newsletter);
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($newsletter);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_newsletter_list');
+        }
 
         return $this->render('pages/newsletter/editNewsletter.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
-
-  
-
+    #[Route('/newsletter/list', name: 'app_newsletter_list')]
+    public function list(NewslettersRepository $newsletter): Response
+    {
+        return $this->render('pages/newsletter/list.html.twig', [
+            'newsletters' => $newsletter->findAll()
+        ]);
+    }
 }
+
 
 
 
