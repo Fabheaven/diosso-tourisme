@@ -21,13 +21,13 @@ class Categories
     /**
      * @var Collection<int, Users>
      */
-    #[ORM\ManyToMany(targetEntity: Users::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'categories')]
     private Collection $users;
 
     /**
      * @var Collection<int, Newsletters>
      */
-    #[ORM\OneToMany(targetEntity: Newsletters::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(targetEntity: Newsletters::class, mappedBy: 'categories', orphanRemoval:true)]
     private Collection $newsletters;
 
     public function __construct()

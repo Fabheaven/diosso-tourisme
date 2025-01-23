@@ -28,7 +28,7 @@
                         <td>{{ newsletter.name }}</td>
                         <td>{{ newsletter.createdAt ? newsletter.createdAt|date('d/m/Y') : 'Non spécifiée' }}</td>
                         <td>{{ newsletter.categories ? newsletter.categories.name : 'Non spécifiée' }}</td>
-                        <td>{{ newsletter.categories and newsletter.categories.users ? newsletter.categories.users|length : 0 }}</td>
+                        <td>{{ newsletter.categories.users|length}}</td>
                         <td>
                             {% if not newsletter.isSent %}
                                 <a href="#" class="btn btn-primary btn-sm">Envoyer</a>
