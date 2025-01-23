@@ -113,23 +113,31 @@ class NewsletterController extends AbstractController
     {
         $newsletter = new Newsletters();
         $form = $this->createForm(NewsletterType::class, $newsletter);
-
+    
+        $form->handleRequest($request);
+    
         // Traitement du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($newsletter);
             $this->entityManager->flush();
-
+    
             // Redirection après la soumission
-            return $this->redirectToRoute('newsletterList');
+            return $this->redirectToRoute('app_newsletterList'); // Nom corrigé ici
         }
-
+    
         return $this->render('/pages/newsletter/prepareNewsletter.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-
-
+    
+    #[Route('newsletter/newsletterList', name: 'app_newsletterList')]
+    public function newsletterList(NewslettersRepository $newsletter): Response
+    {
+        return $this->render('/pages/newsletter/newsletterList.html.twig', [
+            'newsletter' => $newsletter->findAll()
+        ]);
+    }
+    
 
 
     #[Route('/unsubscribe/{id}/{token}', name: 'app_unsubscribe')]
