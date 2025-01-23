@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Newsletter\Newsletters;
 use App\Entity\Newsletter\Users;
 use App\Form\NewsletterUsersType;
+use App\Form\NewsletterType;
+use App\Repository\Newsletter\NewslettersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,6 +107,30 @@ class NewsletterController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
+    #[Route('newsletter/prepareNewsletter', name: 'app_prepareNewsletter')]
+    public function prepareNewsletter(Request $request): Response
+    {
+        $newsletter = new Newsletters();
+        $form = $this->createForm(NewsletterType::class, $newsletter);
+
+        // Traitement du formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($newsletter);
+            $this->entityManager->flush();
+
+            // Redirection après la soumission
+            return $this->redirectToRoute('newsletterList');
+        }
+
+        return $this->render('/pages/newsletter/prepareNewsletter.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+
+
 
     #[Route('/unsubscribe/{id}/{token}', name: 'app_unsubscribe')]
     public function unsubscribe(Users $user = null, $token): Response
