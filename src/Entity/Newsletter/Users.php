@@ -92,11 +92,12 @@ class Users
         return $this->validationToken;
     }
 
-    public function setValidationToken(string $validationToken): self
+    public function setValidationToken(?string $validationToken): self
     {
         $this->validationToken = $validationToken;
         return $this;
     }
+
 
     public function isValid(): ?bool
     {
