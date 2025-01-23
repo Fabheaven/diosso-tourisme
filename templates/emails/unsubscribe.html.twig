@@ -1,0 +1,17 @@
+<p>Bonjour !</p>
+
+<p>Nous avons bien pris en compte votre inscription à notre newsletter. Si vous ne souhaitez plus recevoir nos informations, vous pouvez facilement vous désinscrire à tout moment.</p>
+
+<p>Pour procéder à votre désinscription, cliquez sur le lien ci-dessous :</p>
+
+<p style="text-align: center;">
+    <a href="{{ path('app_unsubscribe', { 'id': user.id, 'token': unsubscribeToken }) }}" style="background-color: #ff5733; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+        Se désinscrire
+    </a>
+</p>
+
+<p>Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter. Nous espérons vous retrouver bientôt parmi nos abonnés.</p>
+
+<p>Cordialement,</p>
+<p>L'équipe de Diosso Tourisme</p>
+<p><small>Si vous n'avez pas demandé cette désinscription, ignorez simplement ce message.</small></p>

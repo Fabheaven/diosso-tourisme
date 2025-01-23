@@ -99,6 +99,21 @@ class Users
     }
 
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $unsubscribeToken = null;
+
+    public function getUnsubscribeToken(): ?string
+    {   
+    return $this->unsubscribeToken;
+    }
+
+    public function setUnsubscribeToken(?string $unsubscribeToken): self
+    {
+        $this->unsubscribeToken = $unsubscribeToken;
+        return $this;
+    }
+
+
     public function isValid(): ?bool
     {
         return $this->isValid;

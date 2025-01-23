@@ -31,20 +31,23 @@ class NewsletterController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Génération d'un token unique
-            $token = hash('sha256', uniqid());
-            if (!$token) {      
-                throw new \RuntimeException('Échec de la génération du token.');
+            // Génération des tokens
+            $validationToken = hash('sha256', uniqid());
+            $unsubscribeToken = hash('sha256', uniqid()); // Token de désinscription
+
+            if (!$validationToken || !$unsubscribeToken) {
+                throw new \RuntimeException('Échec de la génération des tokens.');
             }
 
-            $user->setValidationToken($token);
+            $user->setValidationToken($validationToken);
+            $user->setUnsubscribeToken($unsubscribeToken); // Ajout du token de désinscription
             $user->setValid(false);
 
             // Enregistrement de l'utilisateur en base de données
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // Envoi de l'e-mail de confirmation
+            // Envoi de l'e-mail de confirmation pour l'inscription
             $email = (new TemplatedEmail())
                 ->from('newsletter@diossotourisme.fr')
                 ->to($user->getEmail())
@@ -52,10 +55,23 @@ class NewsletterController extends AbstractController
                 ->htmlTemplate('emails/registration.html.twig')
                 ->context([
                     'user' => $user,
-                    'token' => $token,
+                    'validationToken' => $validationToken,
                 ]);
 
             $mailer->send($email);
+
+            // Envoi de l'email de désinscription avec le unsubscribeToken
+            $emailUnsubscribe = (new TemplatedEmail())
+                ->from('newsletter@diossotourisme.fr')
+                ->to($user->getEmail())
+                ->subject('Confirmez votre désinscription')
+                ->htmlTemplate('emails/unsubscribe.html.twig')
+                ->context([
+                    'user' => $user,
+                    'unsubscribeToken' => $unsubscribeToken,  // Utilisez bien 'unsubscribeToken'
+                ]);
+
+            $mailer->send($emailUnsubscribe); // Envoi du mail de désinscription
 
             $this->addFlash('success', 'Un e-mail de confirmation vous a été envoyé. Veuillez vérifier votre boîte mail.');
 
@@ -88,4 +104,29 @@ class NewsletterController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
+    #[Route('/unsubscribe/{id}/{token}', name: 'app_unsubscribe')]
+    public function unsubscribe(Users $user = null, $token): Response
+    {
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        }
+
+        // Vérification du token de désinscription
+        if ($user->getUnsubscribeToken() !== $token) {
+            throw $this->createNotFoundException('Le lien de désinscription est invalide ou expiré.');
+        }
+
+        // Désinscription de l'utilisateur
+        $user->setValid(false);  // Marquer l'utilisateur comme désinscrit
+        $user->setUnsubscribeToken(null); // Invalide le token de désinscription
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Votre désinscription a été confirmée.');
+
+        return $this->redirectToRoute('app_home');
+    }
 }
+
+

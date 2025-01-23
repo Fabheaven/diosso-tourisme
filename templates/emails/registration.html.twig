@@ -51,14 +51,14 @@
         <p>Vous êtes maintenant abonné à notre newsletter et nous sommes ravis de vous compter parmi nous.</p>
         <p>Pour confirmer votre inscription, cliquez sur le lien ci-dessous :</p>
         <p style="text-align: center;">
-            <a href="{{ absolute_url(path('app_confirm', {id: user.id, token: token})) }}">
+            <a href="{{ absolute_url(path('app_confirm', {id: user.id, token: validationToken})) }}">
                 Confirmer mon inscription
             </a>
         </p>
         <p class="note">
             Si vous ne pouvez pas cliquer sur le lien, copiez et collez cette URL dans votre navigateur :
             <br>
-            <code>{{ absolute_url(path('app_confirm', {id: user.id, token: token})) }}</code>
+            <code>{{ absolute_url(path('app_confirm', {id: user.id, token: validationToken})) }}</code>
         </p>
         <p>Nous vous remercions de votre confiance et espérons que nos newsletters vous inspireront.</p>
         <p style="text-align: center; font-weight: bold; margin-top: 20px;">
