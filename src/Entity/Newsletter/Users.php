@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Entity\Newsletters;
+namespace App\Entity\Newsletter;
 
-use App\Repository\Newsletters\UsersRepository;
+use App\Repository\Newsletter\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 class Users
@@ -16,9 +16,12 @@ class Users
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\Email(message: 'Please provide a valid email address.')]
-    #[Assert\NotBlank(message: 'Email is required.')]
     #[ORM\Column(length: 150, nullable: true)]
+    #[Assert\Email(message: "L'adresse email n'est pas valide.")]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(fr|com)$/",
+        message: "L'adresse email doit être de la forme nom@nom.fr ou nom@nom.com"
+    )]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -27,10 +30,6 @@ class Users
     #[ORM\Column]
     private ?bool $isRgpd = false;
 
-    #[Assert\Length(
-        max: 255,
-        maxMessage: 'Validation token cannot exceed 255 characters.'
-    )]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $validationToken = null;
 
@@ -40,12 +39,12 @@ class Users
     /**
      * @var Collection<int, Categories>
      */
-    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Categories::class, mappedBy: 'users')]
     private Collection $categories;
 
-    public function __construct(?\DateTimeImmutable $createdAt = null)
+    public function __construct()
     {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
         $this->categories = new ArrayCollection();
     }
 
@@ -59,7 +58,7 @@ class Users
         return $this->email;
     }
 
-    public function setEmail(?string $email): self
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
@@ -71,7 +70,7 @@ class Users
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -83,7 +82,7 @@ class Users
         return $this->isRgpd;
     }
 
-    public function setIsRgpd(bool $isRgpd): self
+    public function setRgpd(bool $isRgpd): self
     {
         $this->isRgpd = $isRgpd;
 
@@ -95,7 +94,7 @@ class Users
         return $this->validationToken;
     }
 
-    public function setValidationToken(?string $validationToken): self
+    public function setValidationToken(string $validationToken): self
     {
         $this->validationToken = $validationToken;
 

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Entity\Newsletters;
+namespace App\Entity\Newsletter;
 
-use App\Repository\Newsletters\CategoriesRepository;
+use App\Repository\Newsletter\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories
@@ -16,11 +15,6 @@ class Categories
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: 'The category name cannot be blank.')]
-    #[Assert\Length(
-        max: 255,
-        maxMessage: 'The category name cannot exceed 255 characters.'
-    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -33,7 +27,7 @@ class Categories
     /**
      * @var Collection<int, Newsletters>
      */
-    #[ORM\OneToMany(targetEntity: Newsletters::class, mappedBy: 'categories', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Newsletters::class, mappedBy: 'categories')]
     private Collection $newsletters;
 
     public function __construct()
@@ -52,7 +46,7 @@ class Categories
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -67,21 +61,18 @@ class Categories
         return $this->users;
     }
 
-    public function addUser(Users $user): self
+    public function addUser(Users $user): static
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->addCategory($this);
         }
 
         return $this;
     }
 
-    public function removeUser(Users $user): self
+    public function removeUser(Users $user): static
     {
-        if ($this->users->removeElement($user)) {
-            $user->removeCategory($this);
-        }
+        $this->users->removeElement($user);
 
         return $this;
     }
@@ -94,7 +85,7 @@ class Categories
         return $this->newsletters;
     }
 
-    public function addNewsletter(Newsletters $newsletter): self
+    public function addNewsletter(Newsletters $newsletter): static
     {
         if (!$this->newsletters->contains($newsletter)) {
             $this->newsletters->add($newsletter);
@@ -104,9 +95,10 @@ class Categories
         return $this;
     }
 
-    public function removeNewsletter(Newsletters $newsletter): self
+    public function removeNewsletter(Newsletters $newsletter): static
     {
         if ($this->newsletters->removeElement($newsletter)) {
+            // set the owning side to null (unless already changed)
             if ($newsletter->getCategories() === $this) {
                 $newsletter->setCategories(null);
             }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity\Newsletters;
+namespace App\Entity\Newsletter;
 
-use App\Repository\Newsletters\NewslettersRepository;
+use App\Repository\Newsletter\NewslettersRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,12 +26,6 @@ class Newsletters
     #[ORM\Column]
     private ?bool $isSent = false;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $video = null;
-
     #[ORM\ManyToOne(inversedBy: 'newsletters')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $categories = null;
@@ -51,7 +45,7 @@ class Newsletters
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -63,7 +57,7 @@ class Newsletters
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(string $content): static
     {
         $this->content = $content;
 
@@ -75,7 +69,7 @@ class Newsletters
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -87,33 +81,9 @@ class Newsletters
         return $this->isSent;
     }
 
-    public function setSent(bool $isSent): self
+    public function setSent(bool $isSent): static
     {
         $this->isSent = $isSent;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    public function getVideo(): ?string
-    {
-        return $this->video;
-    }
-
-    public function setVideo(?string $video): static
-    {
-        $this->video = $video;
 
         return $this;
     }

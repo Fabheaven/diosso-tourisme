@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository\Newsletters;
+namespace App\Repository\Newsletter;
 
-use App\Entity\Newsletters\Categories;
+use App\Entity\Newsletter\Categories;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
