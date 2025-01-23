@@ -61,7 +61,6 @@ class Users
     public function setEmail(?string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -73,19 +72,18 @@ class Users
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
-    public function isRgpd(): ?bool
+    // Getter et Setter corrigés pour la propriété isRgpd
+    public function getIsRgpd(): ?bool
     {
         return $this->isRgpd;
     }
 
-    public function setRgpd(bool $isRgpd): self
+    public function setIsRgpd(bool $isRgpd): self
     {
         $this->isRgpd = $isRgpd;
-
         return $this;
     }
 
@@ -97,7 +95,6 @@ class Users
     public function setValidationToken(string $validationToken): self
     {
         $this->validationToken = $validationToken;
-
         return $this;
     }
 
@@ -109,7 +106,6 @@ class Users
     public function setValid(bool $isValid): self
     {
         $this->isValid = $isValid;
-
         return $this;
     }
 
