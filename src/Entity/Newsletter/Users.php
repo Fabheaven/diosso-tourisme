@@ -114,7 +114,7 @@ class Users
     }
 
 
-    public function isValid(): ?bool
+    public function getIsValid(): ?bool
     {
         return $this->isValid;
     }

@@ -138,6 +138,29 @@ class NewsletterController extends AbstractController
         ]);
     }
     
+    #[Route('newsletter/sendNewsletter', name: 'app_sendNewsletter')]
+    public function sendNewsletter(Newsletters $newsletter, MailerInterface $mailer): Response
+    {
+        // Récupérer la liste des utilisateurs associés à la newsletter
+        $users = $newsletter->getCategories()->getUsers();
+    
+        foreach ($users as $user) {
+            if ($user->getIsValid()) {
+                // Envoi des emails aux utilisateurs validés
+                $email = (new TemplatedEmail())
+                    ->from('newsletter@diossotourisme.fr')
+                    ->to($user->getEmail())
+                    ->subject($newsletter->getName())
+                    ->htmlTemplate('emails/newsletterSend.html.twig')
+                    ->context(compact('newsletter', 'user'));
+    
+                $mailer->send($email);
+            }
+        }
+    
+        return $this->redirectToRoute('app_newsletterList');
+    }
+
 
 
     #[Route('/unsubscribe/{id}/{token}', name: 'app_unsubscribe')]
