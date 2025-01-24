@@ -28,7 +28,7 @@ class Newsletters
 
     #[ORM\ManyToOne(inversedBy: 'newsletters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Categories $categories;
+    private ?Categories $categories = null;
 
     public function __construct()
     {
@@ -96,7 +96,6 @@ class Newsletters
     public function setCategories(?Categories $categories): static
     {
         $this->categories = $categories;
-
         return $this;
     }
 }

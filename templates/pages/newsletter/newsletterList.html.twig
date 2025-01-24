@@ -31,7 +31,7 @@
                         <td>{{ newsletter.categories.users|length}}</td>
                         <td>
                             {% if not newsletter.isSent %}
-                                <a href="#" class="btn btn-primary btn-sm">Envoyer</a>
+                                <a href="{{ path('app_newsletterSend', {id: newsletter.id}) }}" class="btn btn-primary btn-sm">Envoyer</a>
                             {% else %}
                                 <span class="badge bg-success">Déjà envoyé</span>
                             {% endif %}

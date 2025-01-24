@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterController extends AbstractController
 {
@@ -138,28 +139,68 @@ class NewsletterController extends AbstractController
         ]);
     }
     
-    #[Route('newsletter/sendNewsletter', name: 'app_sendNewsletter')]
-    public function sendNewsletter(Newsletters $newsletter, MailerInterface $mailer): Response
-    {
-        // Récupérer la liste des utilisateurs associés à la newsletter
-        $users = $newsletter->getCategories()->getUsers();
-    
-        foreach ($users as $user) {
-            if ($user->getIsValid()) {
-                // Envoi des emails aux utilisateurs validés
-                $email = (new TemplatedEmail())
-                    ->from('newsletter@diossotourisme.fr')
-                    ->to($user->getEmail())
-                    ->subject($newsletter->getName())
-                    ->htmlTemplate('emails/newsletterSend.html.twig')
-                    ->context(compact('newsletter', 'user'));
-    
-                $mailer->send($email);
-            }
-        }
-    
+    #[Route('newsletter/newsletterSend/{id}', name: 'app_newsletterSend', methods: ['GET'])]
+public function sendNewsletter(
+    int $id,
+    NewslettersRepository $newslettersRepository,
+    MailerInterface $mailer,
+    UrlGeneratorInterface $urlGenerator
+): Response {
+    // Récupérer la newsletter par son ID
+    $newsletter = $newslettersRepository->find($id);
+
+    // Vérification si la newsletter existe
+    if (!$newsletter) {
+        throw $this->createNotFoundException('La newsletter demandée est introuvable.');
+    }
+
+    // Vérification si une catégorie est associée à la newsletter
+    $categories = $newsletter->getCategories();
+    if (!$categories) {
+        $this->addFlash('error', 'Aucune catégorie associée à cette newsletter.');
         return $this->redirectToRoute('app_newsletterList');
     }
+
+    // Récupérer les utilisateurs de la catégorie
+    $users = $categories->getUsers();
+    if (!$users || count($users) === 0) {
+        $this->addFlash('error', 'Aucun utilisateur associé à cette catégorie.');
+        return $this->redirectToRoute('app_newsletterList');
+    }
+
+    foreach ($users as $user) {
+        if ($user->getIsValid()) {
+            // Générer le lien de désinscription
+            $unsubscribeToken = bin2hex(random_bytes(16)); // Exemple de génération de jeton (à stocker en base si nécessaire)
+            $unsubscribeLink = $urlGenerator->generate('app_unsubscribe', [
+                'id' => $user->getId(),
+                'token' => $unsubscribeToken,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            // Envoi des emails aux utilisateurs validés
+            $email = (new TemplatedEmail())
+                ->from('newsletter@diossotourisme.fr')
+                ->to($user->getEmail())
+                ->subject($newsletter->getName())
+                ->htmlTemplate('emails/newsletterSend.html.twig')
+                ->context([
+                    'newsletter' => $newsletter,
+                    'user' => $user,
+                    'unsubscribeToken' => $unsubscribeToken, // Ajout du token dans le contexte
+                ]);
+
+            $mailer->send($email);
+        }
+    }
+
+    // Message de succès
+    $this->addFlash('success', 'La newsletter a été envoyée avec succès.');
+    
+    // Redirection après traitement
+    return $this->redirectToRoute('app_newsletterList');
+}
+
+
 
 
 
