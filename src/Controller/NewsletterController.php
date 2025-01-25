@@ -70,8 +70,8 @@ class NewsletterController extends AbstractController
             throw $this->createNotFoundException('Lien de confirmation invalide ou expiré.');
         }
 
-        $user->setValid(true);
-        $user->setValidationToken(null);
+        $user->setValid(true); // L'utilisateur devient valide
+        // Le token reste en place pour une utilisation ultérieure
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
@@ -79,6 +79,7 @@ class NewsletterController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
+
 
     #[Route('newsletter/prepareNewsletter', name: 'app_prepareNewsletter')]
     public function prepareNewsletter(Request $request): Response
