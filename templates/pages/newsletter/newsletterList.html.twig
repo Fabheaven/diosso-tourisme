@@ -22,7 +22,7 @@
             </thead>
 
             <tbody>
-                {% for newsletter in newsletter %}
+                {% for newsletter in newsletters %}
                     <tr class="{{ newsletter.isSent ? 'table-success' : '' }}">
                         <td>{{ newsletter.id }}</td>
                         <td>{{ newsletter.name }}</td>

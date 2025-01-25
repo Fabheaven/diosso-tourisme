@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NewsletterController extends AbstractController
 {
@@ -31,27 +30,17 @@ class NewsletterController extends AbstractController
         $user = new Users();
         $form = $this->createForm(NewsletterUsersType::class, $user);
 
-        // Traitement du formulaire d'abonnement
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Génération des tokens
             $validationToken = hash('sha256', uniqid());
-            $unsubscribeToken = hash('sha256', uniqid()); // Token de désinscription
-
-            if (!$validationToken || !$unsubscribeToken) {
-                throw new \RuntimeException('Échec de la génération des tokens.');
-            }
 
             $user->setValidationToken($validationToken);
-            $user->setUnsubscribeToken($unsubscribeToken); // Ajout du token de désinscription
             $user->setValid(false);
 
-            // Enregistrement de l'utilisateur en base de données
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // Envoi de l'e-mail de confirmation pour l'inscription
             $email = (new TemplatedEmail())
                 ->from('newsletter@diossotourisme.fr')
                 ->to($user->getEmail())
@@ -64,19 +53,6 @@ class NewsletterController extends AbstractController
 
             $mailer->send($email);
 
-            // Envoi de l'email de désinscription avec le unsubscribeToken
-            $emailUnsubscribe = (new TemplatedEmail())
-                ->from('newsletter@diossotourisme.fr')
-                ->to($user->getEmail())
-                ->subject('Confirmez votre désinscription')
-                ->htmlTemplate('emails/unsubscribe.html.twig')
-                ->context([
-                    'user' => $user,
-                    'unsubscribeToken' => $unsubscribeToken,  // Utilisez bien 'unsubscribeToken'
-                ]);
-
-            $mailer->send($emailUnsubscribe); // Envoi du mail de désinscription
-
             $this->addFlash('success', 'Un e-mail de confirmation vous a été envoyé. Veuillez vérifier votre boîte mail.');
 
             return $this->redirectToRoute('app_home');
@@ -88,19 +64,14 @@ class NewsletterController extends AbstractController
     }
 
     #[Route('/confirm/{id}/{token}', name: 'app_confirm')]
-    public function confirm(Users $user = null, $token): Response
+    public function confirm(Users $user = null, string $token): Response
     {
-        if (!$user) {
-            throw $this->createNotFoundException('Utilisateur non trouvé.');
+        if (!$user || $user->getValidationToken() !== $token) {
+            throw $this->createNotFoundException('Lien de confirmation invalide ou expiré.');
         }
 
-        if ($user->getValidationToken() !== $token) {
-            throw $this->createNotFoundException('Le lien de confirmation est invalide ou expiré.');
-        }
-
-        // Validation de l'utilisateur
         $user->setValid(true);
-        $user->setValidationToken(null); // Invalide le token après utilisation
+        $user->setValidationToken(null);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
@@ -114,118 +85,70 @@ class NewsletterController extends AbstractController
     {
         $newsletter = new Newsletters();
         $form = $this->createForm(NewsletterType::class, $newsletter);
-    
+
         $form->handleRequest($request);
-    
-        // Traitement du formulaire
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($newsletter);
             $this->entityManager->flush();
-    
-            // Redirection après la soumission
-            return $this->redirectToRoute('app_newsletterList'); // Nom corrigé ici
+
+            return $this->redirectToRoute('app_newsletterList');
         }
-    
+
         return $this->render('/pages/newsletter/prepareNewsletter.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-    
+
     #[Route('newsletter/newsletterList', name: 'app_newsletterList')]
-    public function newsletterList(NewslettersRepository $newsletter): Response
+    public function newsletterList(NewslettersRepository $newsletterRepository): Response
     {
+        // Récupérer toutes les newsletters depuis le repository
+        $newsletters = $newsletterRepository->findAll();
+    
+        // Rendre la vue avec les newsletters
         return $this->render('/pages/newsletter/newsletterList.html.twig', [
-            'newsletter' => $newsletter->findAll()
+            'newsletters' => $newsletters,
         ]);
     }
     
+
     #[Route('newsletter/newsletterSend/{id}', name: 'app_newsletterSend', methods: ['GET'])]
-public function sendNewsletter(
-    int $id,
-    NewslettersRepository $newslettersRepository,
-    MailerInterface $mailer,
-    UrlGeneratorInterface $urlGenerator
-): Response {
-    // Récupérer la newsletter par son ID
-    $newsletter = $newslettersRepository->find($id);
+    public function sendNewsletter(
+        int $id,
+        NewslettersRepository $newslettersRepository,
+        MailerInterface $mailer
+    ): Response {
+        $newsletter = $newslettersRepository->find($id);
 
-    // Vérification si la newsletter existe
-    if (!$newsletter) {
-        throw $this->createNotFoundException('La newsletter demandée est introuvable.');
-    }
+        if (!$newsletter) {
+            throw $this->createNotFoundException('La newsletter demandée est introuvable.');
+        }
 
-    // Vérification si une catégorie est associée à la newsletter
-    $categories = $newsletter->getCategories();
-    if (!$categories) {
-        $this->addFlash('error', 'Aucune catégorie associée à cette newsletter.');
+        $categories = $newsletter->getCategories();
+        if (!$categories || $categories->getUsers()->isEmpty()) {
+            $this->addFlash('error', 'Aucun utilisateur associé à cette catégorie.');
+            return $this->redirectToRoute('app_newsletterList');
+        }
+
+        foreach ($categories->getUsers() as $user) {
+            if ($user->getIsValid()) {
+                $email = (new TemplatedEmail())
+                    ->from('newsletter@diossotourisme.fr')
+                    ->to($user->getEmail())
+                    ->subject($newsletter->getName())
+                    ->htmlTemplate('emails/newsletterSend.html.twig')
+                    ->context([
+                        'newsletter' => $newsletter,
+                        'user' => $user,
+                    ]);
+
+                $mailer->send($email);
+            }
+        }
+
+        $this->addFlash('success', 'La newsletter a été envoyée avec succès.');
+
         return $this->redirectToRoute('app_newsletterList');
     }
-
-    // Récupérer les utilisateurs de la catégorie
-    $users = $categories->getUsers();
-    if (!$users || count($users) === 0) {
-        $this->addFlash('error', 'Aucun utilisateur associé à cette catégorie.');
-        return $this->redirectToRoute('app_newsletterList');
-    }
-
-    foreach ($users as $user) {
-        if ($user->getIsValid()) {
-            // Générer le lien de désinscription
-            $unsubscribeToken = bin2hex(random_bytes(16)); // Exemple de génération de jeton (à stocker en base si nécessaire)
-            $unsubscribeLink = $urlGenerator->generate('app_unsubscribe', [
-                'id' => $user->getId(),
-                'token' => $unsubscribeToken,
-            ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-            // Envoi des emails aux utilisateurs validés
-            $email = (new TemplatedEmail())
-                ->from('newsletter@diossotourisme.fr')
-                ->to($user->getEmail())
-                ->subject($newsletter->getName())
-                ->htmlTemplate('emails/newsletterSend.html.twig')
-                ->context([
-                    'newsletter' => $newsletter,
-                    'user' => $user,
-                    'unsubscribeToken' => $unsubscribeToken, // Ajout du token dans le contexte
-                ]);
-
-            $mailer->send($email);
-        }
-    }
-
-    // Message de succès
-    $this->addFlash('success', 'La newsletter a été envoyée avec succès.');
-    
-    // Redirection après traitement
-    return $this->redirectToRoute('app_newsletterList');
 }
-
-
-
-
-
-    #[Route('/unsubscribe/{id}/{token}', name: 'app_unsubscribe')]
-    public function unsubscribe(Users $user = null, $token): Response
-    {
-        if (!$user) {
-            throw $this->createNotFoundException('Utilisateur non trouvé.');
-        }
-
-        // Vérification du token de désinscription
-        if ($user->getUnsubscribeToken() !== $token) {
-            throw $this->createNotFoundException('Le lien de désinscription est invalide ou expiré.');
-        }
-
-        // Désinscription de l'utilisateur
-        $user->setValid(false);  // Marquer l'utilisateur comme désinscrit
-        $user->setUnsubscribeToken(null); // Invalide le token de désinscription
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        $this->addFlash('success', 'Votre désinscription a été confirmée.');
-
-        return $this->redirectToRoute('app_home');
-    }
-}
-
-
