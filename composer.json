@@ -12,7 +12,7 @@
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "^3.3",
         "easycorp/easyadmin-bundle": "^4.20",
-        "fakerphp/faker": "^1.24",
+        "fakerphp/faker": "^1.24.1",
         "guzzlehttp/guzzle": "^7.9",
         "karser/karser-recaptcha3-bundle": "^0.1.28",
         "knplabs/knp-menu-bundle": "^3.5",

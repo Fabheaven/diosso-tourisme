@@ -8,16 +8,18 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cet email existe déjà au sein de l\'application.')]
 #[ORM\HasLifecycleCallbacks]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'binary', length: 16, unique: true)]
+    #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?string $id = null;
 
     #[ORM\Column(type: 'string', length: 4, nullable: true)]
@@ -65,7 +67,6 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->getBytes(); // Génère un UUID binaire lors de l'instanciation
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
