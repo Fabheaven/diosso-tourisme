@@ -17,6 +17,7 @@
         "karser/karser-recaptcha3-bundle": "^0.1.28",
         "knplabs/knp-menu-bundle": "^3.5",
         "liip/imagine-bundle": "^2.13",
+        "ramsey/uuid-doctrine": "^2.1",
         "scheb/2fa-bundle": "^7.6",
         "sonata-project/admin-bundle": "^4.34",
         "stripe/stripe-php": "^16.4",
