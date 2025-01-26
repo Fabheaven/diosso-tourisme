@@ -150,6 +150,10 @@ class NewsletterController extends AbstractController
 
         $this->addFlash('success', 'La newsletter a été envoyée avec succès.');
 
+        $newsletter->setSent(true);
+        $this->entityManager->persist($newsletter);
+        $this->entityManager->flush();
+
         return $this->redirectToRoute('app_newsletterList');
     }
 

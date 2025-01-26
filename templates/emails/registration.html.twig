@@ -48,7 +48,7 @@
 <body>
     <div class="container">
         
-        <h1>Merci de vous être inscrit à notre newsletter !</h1>
+        <h1>Merci pour votre inscription !</h1>
 
    <p>Nous avons bien enregistré votre demande d'inscription avec l'email suivant : <strong>{{ user.email }}</strong></p>
 
@@ -70,6 +70,7 @@
             <code>{{ absolute_url(path('app_confirm', {id: user.id, token: validationToken})) }}</code>
         </p>
         <p>Nous vous remercions de votre confiance et espérons que nos newsletters vous inspireront.</p>
+        <p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.</p>
         <p style="text-align: center; font-weight: bold; margin-top: 20px;">
             L’équipe de Diosso Tourisme
         </p>
