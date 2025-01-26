@@ -24,7 +24,7 @@
 
       <!-- Désinscription -->
       <p style="font-size: 12px; line-height: 1.6; text-align: center; color: #95a5a6; margin-top: 20px;">
-          Si vous ne souhaitez plus recevoir nos newsletters, vous pouvez vous <a href="#" style="color: #3498db; text-decoration: none;">désinscrire ici</a>.
+          Si vous ne souhaitez plus recevoir nos newsletters, vous pouvez vous <a href="{{ absolute_url(path('app_unsubscribe', {id: user.id, newsletter:newsletter.id, token: user.validationToken })) }}" style="color: #3498db; text-decoration: none;">désinscrire ici</a>.
       </p>
    </div>
 </body>

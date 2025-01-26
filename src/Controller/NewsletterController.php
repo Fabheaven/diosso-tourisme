@@ -152,4 +152,33 @@ class NewsletterController extends AbstractController
 
         return $this->redirectToRoute('app_newsletterList');
     }
+
+    #[Route('/unsubscribe/{id}/{newsletter}/{token}', name: 'app_unsubscribe')]
+    public function unsubscribe(Users $user, Newsletters $newsletter, $token, EntityManagerInterface $em): Response
+    {
+        // Vérification si le token de validation de l'utilisateur est valide
+        if ($user->getValidationToken() !== $token) {
+            throw $this->createNotFoundException('Le lien de désinscription est invalide ou expiré.');
+        }
+    
+        // Vérification du nombre de catégories associées à l'utilisateur
+        if (count($user->getCategories()) > 1) {
+            // Retirer la catégorie liée à la newsletter
+            $user->removeCategory($newsletter->getCategories());
+            $em->persist($user);
+        } else {
+            // Si l'utilisateur n'a plus que cette catégorie, on le supprime
+            $em->remove($user);
+        }
+    
+        // Appliquer les changements dans la base de données
+        $em->flush();
+    
+        // Ajouter un message flash pour indiquer le succès de la désinscription
+        $this->addFlash('success', 'Votre désinscription a été confirmée.');
+    
+        // Rediriger vers la page d'accueil ou une autre page
+        return $this->redirectToRoute('app_home');
+    }
+    
 }

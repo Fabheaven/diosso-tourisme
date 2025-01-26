@@ -93,9 +93,11 @@ class Newsletters
         return $this->categories;
     }
 
-    public function setCategories(?Categories $categories): static
+    public function setCategories(Categories $categories): static
     {
         $this->categories = $categories;
+
         return $this;
     }
+
 }

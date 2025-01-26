@@ -47,8 +47,17 @@
 </head>
 <body>
     <div class="container">
-        <h1>Merci pour votre inscription !</h1>
-        <p>Vous êtes maintenant abonné à notre newsletter et nous sommes ravis de vous compter parmi nous.</p>
+        
+        <h1>Merci de vous être inscrit à notre newsletter !</h1>
+
+   <p>Nous avons bien enregistré votre demande d'inscription avec l'email suivant : <strong>{{ user.email }}</strong></p>
+
+   <p>Vous avez sélectionné les catégories suivantes :</p>
+   <ul>
+      {% for category in user.categories %}
+         <li>{{ category.name }}</li>
+      {% endfor %}
+   </ul>
         <p>Pour confirmer votre inscription, cliquez sur le lien ci-dessous :</p>
         <p style="text-align: center;">
             <a href="{{ absolute_url(path('app_confirm', {id: user.id, token: validationToken})) }}">
