@@ -23,4 +23,10 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername, // Pour pré-remplir le champ du formulaire si nécessaire
         ]);
     }
+
+    #[Route('/deconnexion', name: 'security.logout', methods: ['GET'])]
+    public function logout(): void
+    {
+
+    }
 }
