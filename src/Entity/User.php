@@ -10,6 +10,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Articles\Cart;
+use App\Entity\Articles\Activity;
+use App\Entity\Articles\Circuit;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Cet email existe déjà au sein de l\'application.')]
@@ -65,10 +70,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
 
+    #[ORM\OneToOne(targetEntity: Cart::class, mappedBy: 'user')]
+    private ?Cart $cart = null;  // Relation 1,1 avec Cart
+
+    #[ORM\ManyToMany(targetEntity: Activity::class, mappedBy: 'users')]
+    private Collection $activities;  // Relation N,N avec Activity
+
+    #[ORM\ManyToMany(targetEntity: Circuit::class, mappedBy: 'users')]
+    private Collection $circuits;  // Relation N,N avec Circuit
+
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->activities = new ArrayCollection();
+        $this->circuits = new ArrayCollection();
     }
 
     public function generateUserInitial(): void
@@ -149,6 +166,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(?string $address): self
     {
         $this->address = $address;
+        return $this;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        // définissez la relation inverse dans l'entité Cart
+        if ($cart !== null && $cart->getUser() !== $this) {
+            $cart->setUser($this);
+        }
+        $this->cart = $cart;
+        return $this;
+    }
+
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+        }
+        return $this;
+    }
+
+    public function getCircuits(): Collection
+    {
+        return $this->circuits;
+    }
+
+    public function addCircuit(Circuit $circuit): self
+    {
+        if (!$this->circuits->contains($circuit)) {
+            $this->circuits[] = $circuit;
+        }
         return $this;
     }
 

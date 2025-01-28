@@ -23,9 +23,13 @@ class Wishlist
     #[ORM\ManyToMany(targetEntity: Activity::class)]
     private Collection $activities;
 
+    #[ORM\ManyToMany(targetEntity: Circuit::class)]
+    private Collection $circuits;
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();
+        $this->circuits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,6 +69,30 @@ class Wishlist
     public function removeActivity(Activity $activity): self
     {
         $this->activities->removeElement($activity);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Circuit>
+     */
+    public function getCircuits(): Collection
+    {
+        return $this->circuits;
+    }
+
+    public function addCircuit(Circuit $circuit): self
+    {
+        if (!$this->circuits->contains($circuit)) {
+            $this->circuits[] = $circuit;
+        }
+
+        return $this;
+    }
+
+    public function removeCircuit(Circuit $circuit): self
+    {
+        $this->circuits->removeElement($circuit);
 
         return $this;
     }

@@ -8,72 +8,73 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-/**
-* @ORM\Entity(repositoryClass=CartRepository::class)
-*/
+#[ORM\Entity]
 class Cart
 {
-/**
-* @ORM\Id
-* @ORM\GeneratedValue
-* @ORM\Column(type="integer")
-*/
-private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-/**
-* @ORM\ManyToOne(targetEntity=User::class, inversedBy="carts")
-* @ORM\JoinColumn(nullable=false)
-*/
-private ?User $user = null;
+    #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Cart $cart = null;
 
-/**
-* @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="cart", cascade={"persist", "remove"})
-*/
-private Collection $items;
+    #[ORM\ManyToOne(targetEntity: Circuit::class)]
+    private ?Circuit $circuit = null;
 
-public function __construct()
-{
-$this->items = new ArrayCollection();
-}
+    #[ORM\ManyToOne(targetEntity: Activity::class)]
+    private ?Activity $activity = null;
 
-public function getId(): ?int
-{
-return $this->id;
-}
+    #[ORM\Column(type: 'integer')]
+    private ?int $quantity = 1;
 
-public function getUser(): ?User
-{
-return $this->user;
-}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-public function setUser(User $user): self
-{
-$this->user = $user;
-return $this;
-}
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
 
-/**
-* @return Collection<int, CartItem>
-*/
-public function getItems(): Collection
-{
-return $this->items;
-}
+    public function setCart(Cart $cart): self
+    {
+        $this->cart = $cart;
+        return $this;
+    }
 
-public function addItem(CartItem $item): self
-{
-if (!$this->items->contains($item)) {
-$this->items[] = $item;
-$item->setCart($this);
-}
+    public function getCircuit(): ?Circuit
+    {
+        return $this->circuit;
+    }
 
-return $this;
-}
+    public function setCircuit(?Circuit $circuit): self
+    {
+        $this->circuit = $circuit;
+        return $this;
+    }
 
-public function removeItem(CartItem $item): self
-{
-$this->items->removeElement($item);
+    public function getActivity(): ?Activity
+    {
+        return $this->activity;
+    }
 
-return $this;
-}
+    public function setActivity(?Activity $activity): self
+    {
+        $this->activity = $activity;
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
 }

@@ -22,8 +22,9 @@ class Pack
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'decimal', scale: 2)]
-    private ?float $price = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+    private ?string $price = null;  // ou un autre type adapté, selon vos besoins
+    
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTime $createdAt = null;
