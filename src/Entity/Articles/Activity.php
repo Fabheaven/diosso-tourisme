@@ -24,19 +24,34 @@ class Activity
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)] // Ajout du champ price
     private ?float $price = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)] // Ajout du champ image
-    private ?string $image = null;
-
     #[ORM\ManyToMany(targetEntity: Circuit::class, mappedBy: 'activities')]
     private Collection $circuits;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+    
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
+
+    #[ORM\Column(type: 'string')]
+    private string $state;
+
+    #[ORM\OneToOne(inversedBy: 'activity', targetEntity: MediaFile::class, cascade: ['persist', 'remove'])]
+    private ?MediaFile $mediafile;
+
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'activities')]
     private Collection $users; // Relation inverse N,N avec User
+
+    // Constantes pour les états de l'activité
+    public const STATES = ['active', 'inactive', 'pending']; 
 
     public function __construct()
     {
         $this->circuits = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->state = self::STATES[0];  // Définit un état par défaut
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();  
     }
 
     // Getters and setters
@@ -78,20 +93,6 @@ class Activity
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Circuit>
-     */
     public function getCircuits(): Collection
     {
         return $this->circuits;
@@ -121,7 +122,7 @@ class Activity
         return $this->users;
     }
 
-    public function setUsers($users)
+    public function setUsers(Collection $users): self
     {
         $this->users = $users;
         return $this;
@@ -132,6 +133,62 @@ class Activity
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
         }
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTimeImmutable(); // Correction : majuscule remplacée par minuscule
+    }
+
+   
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    
+    public function getMediafile()
+    {
+        return $this->mediafile;
+    }
+
+   
+    public function setMediafile($mediafile)
+    {
+        $this->mediafile = $mediafile;
+
         return $this;
     }
 }

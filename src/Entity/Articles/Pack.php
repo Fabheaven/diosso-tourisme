@@ -26,8 +26,8 @@ class Pack
     private ?string $price = null;  // ou un autre type adapté, selon vos besoins
     
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTime $createdAt = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'pack')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,7 +41,7 @@ class Pack
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
         $this->circuits = new ArrayCollection();
         $this->activities = new ArrayCollection();
     }
@@ -92,7 +92,7 @@ class Pack
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
