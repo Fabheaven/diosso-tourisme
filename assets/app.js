@@ -1,4 +1,5 @@
 import './styles/app.css';
+import 'tw-elements';
 
 //  Boutons de connexion
 

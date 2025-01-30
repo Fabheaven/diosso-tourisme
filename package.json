@@ -25,6 +25,7 @@
         "autoprefixer": "^10.4.20",
         "postcss": "^8.5.1",
         "swiper": "^11.2.0",
-        "tailwindcss": "^4.0.1"
+        "tailwindcss": "^4.0.1",
+        "tw-elements": "^2.0.0"
     }
 }
